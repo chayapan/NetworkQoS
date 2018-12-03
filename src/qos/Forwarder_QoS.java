@@ -11,6 +11,8 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 public class Forwarder_QoS extends Thread {
+	public static int STAT_INTERVAL = 1; // Print statistics every n seconds.
+	
 	public static final int CONSUMER_PORT = 4568;
 
 	private DatagramSocket socket;
@@ -63,8 +65,8 @@ public class Forwarder_QoS extends Thread {
 
 		while (true) {
 
-			// Report statistics every 4,000 milisec
-			if ((System.currentTimeMillis() - this.lastStat) > 4000) {
+			// Report statistics every STAT_INTERVAL x 1000 milisec
+			if ((System.currentTimeMillis() - this.lastStat) > 1000 * STAT_INTERVAL) {
 				System.out.println(new Date().toString() + " | " + getStatistics());
 				this.lastStat = System.currentTimeMillis();
 			}

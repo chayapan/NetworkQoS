@@ -9,6 +9,8 @@ import java.util.Date;
 import java.util.concurrent.BlockingQueue;
 
 public class Receiver extends Thread {
+	public static int STAT_INTERVAL = 1; // Print statistics every n seconds.
+	
 	public static final int PORT = 4567;
 	
 	private DatagramSocket socket;
@@ -80,8 +82,8 @@ public class Receiver extends Thread {
 					receivedY += 1;
 				}
 				
-				// Report statistics every 4,000 milisec
-				if ((System.currentTimeMillis() - this.lastStat) > 4000) {
+				// Report statistics every STAT_INTERVAL x 1000 milisec
+				if ((System.currentTimeMillis() - this.lastStat) > 1000 * STAT_INTERVAL) {
 					System.out.println(new Date().toString() + " | " + getStatistics());
 					this.lastStat = System.currentTimeMillis();
 				}

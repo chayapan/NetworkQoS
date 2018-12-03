@@ -16,7 +16,7 @@ public class Consumer extends Thread {
 	private int port;
 	private byte[] buf = new byte[256];
 	
-	private Date startTime;
+	public Date startTime;
 	public long lastStat;
 	private long receivedTotal;
 	private long receivedX;

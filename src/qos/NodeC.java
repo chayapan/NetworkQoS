@@ -17,14 +17,23 @@ public class NodeC {
 		Consumer consume = new Consumer(Consumer.PORT, queue);
 		consume.start(); // start consumer thread
 		
-		// poll Consumer thread every 1 seconds for statistics
+		// Poll Consumer thread every 1 seconds for statistics. Stop program after 30 seconds.
 		while (true) {
 			// Report statistics every 1,000 milisec
 			if ((System.currentTimeMillis() - consume.lastStat) > 1000) {
 				System.out.println(new Date().toString() + " | " + consume.getStatistics());
 				consume.lastStat = System.currentTimeMillis();
 			}
+			
+
+			// Stop program automatically after 30 seconds.
+			if ((System.currentTimeMillis() - consume.startTime.getTime()) > 30000) {
+				System.out.println(consume.getStatistics()); // Dump statistics.
+				System.out.println(new Date().toString() + " | NodeC shutsdown.");
+				System.exit(0);
+			}
 		}
+		
 	}
 
 	public static void main(String[] args) {

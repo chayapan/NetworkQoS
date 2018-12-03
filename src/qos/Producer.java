@@ -8,7 +8,10 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class Producer {
@@ -54,6 +57,10 @@ public class Producer {
 			System.out.println(this.getStatistics());
         		long e1 = System.currentTimeMillis();
         		
+        		
+        		/* 
+        		 * DEBUG
+        		 * Send X and Y in pre-determine order.  Send 20 X, then send 30 Y.
         		for (int j = 1; j <= 20; j++) {
         			sendX("foo" + i + "_" + j + "_WWWWWWWWWWWW");
         			sentX += 1;
@@ -62,6 +69,32 @@ public class Producer {
         		for (int j = 1; j <= 30; j++) {
         			sendY("bar" + i + "_" + j + "_WWWWWWWWWWWW");
         			sentY += 1;
+        		}
+        		*/
+        		
+        		/* Send X and Y in random order */
+        		int x_count = 20;
+        		int y_count = 30;
+        		List<Character> sendSequence = new ArrayList<>();
+        		for (int sx = 0; sx < x_count; sx++ ) {
+        			sendSequence.add('X');
+        		}
+        		for (int sy = 0; sy < y_count; sy++ ) {
+        			sendSequence.add('Y');
+        		}
+        		// System.out.println(sendSequence);
+        		Collections.shuffle(sendSequence); // Randomize sending order.
+        		// System.out.println(sendSequence);
+
+        		for (int j = 0; j < x_count + y_count; j++) {
+        			if (sendSequence.get(j) == 'X') {
+            			sendX("foo" + i + "_" + j + "_WWWWWWWWWWWW"); // Send type X
+            			sentX += 1;
+        			}
+            		if (sendSequence.get(j) == 'Y') {
+	        			sendY("bar" + i + "_" + j + "_WWWWWWWWWWWW"); // Send type Y
+	        			sentY += 1;
+            		}
         		}
         		
     			long e2 = System.currentTimeMillis() - e1; // milliseconds from second starts.
